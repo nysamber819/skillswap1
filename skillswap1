@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up Form</title>
+  <style>
+    /* Container styling */
+    .container {
+      width: 60%; /* Adjust container width */
+      margin: 0 auto;
+    }
+
+    /* Add flexbox to each form row */
+    .form-row {
+      display: flex; /* Align label and input horizontally */
+      margin-bottom: 10px; /* Add space between rows */
+      align-items: center; /* Vertically center the label and input */
+    }
+
+    label {
+      font-family: Georgia; /* Set the font to Georgia */
+      width: 150px; /* Set label width */
+      text-align: center; /* Center the label text horizontally */
+      margin-right: 10px; /* Space between label and input */
+      white-space: nowrap; /* Prevent breaking label text into two lines */
+      display: flex;
+      justify-content: center; /* Center content horizontally */
+      align-items: center; /* Center content vertically */
+    }
+
+    input {
+      width: 100%; /* Make input take up remaining space */
+      padding: 10px;
+      box-sizing: border-box; /* Ensure padding doesn't affect width */
+      font-family: Georgia; /* Set font for input fields to match the rest */
+    }
+
+    .clearfix {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .cancelbtn, .signupbtn {
+      padding: 10px 20px;
+      margin-top: 10px;
+      cursor: pointer;
+      font-family: Georgia; /* Set font for buttons to match the rest */
+      border: none; /* Remove default border */
+    }
+
+    /* Style for the Sign Up button */
+    .signupbtn {
+      background-color: #1e6c93; /* Blue background */
+      color: white; /* White text */
+      border: none; /* Remove the black border */
+      border-radius: 5px; /* Optional: rounded corners */
+    }
+
+    /* Style for the Cancel button with added black border */
+    .cancelbtn {
+      background-color: #f2f2f2; /* Optional: Red color for cancel button */
+      color: black; /* Black text */
+      border: 1px solid black; /* Thin black border around the Cancel button */
+      border-radius: 5px; /* Optional: rounded corners */
+    }
+
+    /* Adjust the overall form width */
+    .form-row input {
+      width: calc(100% - 160px); /* Ensure the input takes up the remaining space (100% minus label width) */
+    }
+  </style>
+</head>
+<body>
+
+  <form id="signupForm">
+    <div class="container">
+      <div class="form-row">
+        <label for="Username">Username</label>
+        <input type="text" placeholder="Enter Username" id="Username" name="Username" required>
+      </div>
+
+      <div class="form-row">
+        <label for="email">Email</label>
+        <input type="email" placeholder="Enter Email" id="email" name="email" required>
+      </div>
+
+      <div class="form-row">
+        <label for="psw">Password</label>
+        <input type="password" placeholder="Enter Password" name="psw" required>
+      </div>
+
+      <div class="form-row">
+        <label for="psw-repeat">Repeat Password</label>
+        <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
+      </div>
+
+      <p>Your privacy is important to us. We never share your data without your consent.</p>
+
+      <div class="clearfix">
+        <button type="reset" class="cancelbtn">Cancel</button>
+        <button type="submit" class="signupbtn">Sign Up</button>
+      </div>
+    </div>
+  </form>
+
+  <script>
+    // JavaScript for checking if the username or email is already taken and password validation
+    document.getElementById('signupForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent default form submission
+
+      // Get the username, email, password, and repeat password from the form
+      var username = document.getElementById('Username').value;
+      var email = document.getElementById('email').value;
+      var password = document.querySelector('[name="psw"]').value;
+      var passwordRepeat = document.querySelector('[name="psw-repeat"]').value;
+
+      // Password mismatch validation
+      if (password !== passwordRepeat) {
+        alert("Passwords do not match! Please try again.");
+        return; // Stop form submission
+      }
+
+      // Prepare form data to be sent in the POST request
+      var formData = new FormData();
+      formData.append('Username', username);
+      formData.append('email', email);
+      formData.append('psw', password);
+
+      // Send POST request to Google Apps Script (replace with your deployment URL)
+      fetch('https://script.google.com/macros/s/AKfycbxD8Q-QXQ466myP4RgjOzJ2UGazw5jBG2cCIoIJMNkv/exec', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.text())
+      .then(data => {
+        alert(data); // Display response message from Google Apps Script (e.g., "Username already taken" or "Signup successful")
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+  </script>
+
+</body>
+</html>
